@@ -1,0 +1,94 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Event Checker — Criar Evento</title>
+<style>
+  body{font-family:system-ui,Arial,sans-serif;max-width:680px;margin:32px auto;padding:0 16px}
+  h1{font-size:22px;margin-bottom:16px} label{display:block;margin:10px 0 4px}
+  input,select,textarea,button{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .card{border:1px solid #eee;border-radius:12px;padding:16px;margin-top:18px}
+  .ok{color:#0a7a20}.err{color:#b00020}.mono{font-family:ui-monospace,Menlo,monospace}
+</style>
+</head><body>
+<h1>🎉 Criar evento</h1>
+
+<div class="card">
+  <label>Título do evento*</label><input id="title" placeholder="Aniversário do João">
+  <label>Anfitrião*</label><input id="host_name" placeholder="Família Silva">
+  <div class="row">
+    <div><label>Data (AAAA-MM-DD)*</label><input id="date" placeholder="2025-11-15"></div>
+    <div><label>Horário (24h)*</label><input id="time" placeholder="18:00"></div>
+  </div>
+  <label>Local*</label><input id="location" placeholder="Rua das Flores, 123">
+  <label>Observações (opcional)</label><textarea id="notes" rows="3" placeholder="Leve sua energia boa!"></textarea>
+
+  <div class="row">
+    <div><label>RSVP até (ISO com -03:00)*</label>
+      <input id="rsvp_deadline" placeholder="2025-11-14T23:59:00-03:00">
+    </div>
+    <div><label>Contar “Talvez” nas métricas?</label>
+      <select id="include_maybe_in_counts">
+        <option value="false">Não</option>
+        <option value="true">Sim</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div><label>Cor primária</label><input id="color_primary" placeholder="#f97316"></div>
+    <div><label>Cor secundária</label><input id="color_secondary" placeholder="#fde68a"></div>
+  </div>
+  <label>Solicitar e-mail do convidado?</label>
+  <select id="ask_email">
+    <option value="false">Não</option>
+    <option value="true">Sim</option>
+  </select>
+
+  <button id="createBtn" style="margin-top:14px">Criar evento</button>
+  <div id="msg" style="margin-top:10px"></div>
+</div>
+
+<div id="links" class="card" style="display:none">
+  <h3>Links gerados</h3>
+  <p><strong>Convidados:</strong> <a id="guestLink" class="mono" target="_blank"></a></p>
+  <p><strong>Painel:</strong> <a id="hostLink" class="mono" target="_blank"></a></p>
+</div>
+
+<script>
+const BASE_API = "https://event-checker-k47o.onrender.com";
+const BASE_FRONT = location.origin + location.pathname.replace(/\/create\.html$/,''); // pasta /docs
+
+document.getElementById('createBtn').onclick = async () => {
+  const body = {
+    title: v('title'), host_name: v('host_name'),
+    date: v('date'), time: v('time'), location: v('location'),
+    notes: v('notes') || null,
+    rsvp_deadline: v('rsvp_deadline'),
+    color_primary: v('color_primary') || null,
+    color_secondary: v('color_secondary') || null,
+    ask_email: v('ask_email') === 'true',
+    include_maybe_in_counts: v('include_maybe_in_counts') === 'true'
+  };
+  setMsg('Enviando...', ''); 
+  try{
+    const r = await fetch(`${BASE_API}/api/events`,{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
+    });
+    const j = await r.json();
+    if(!r.ok) throw new Error(j.error || 'Falha ao criar');
+    // Usaremos as páginas estáticas no GitHub Pages:
+    const guest = `${BASE_FRONT}/rsvp.html?e=${encodeURIComponent(j.event_id)}`;
+    const host  = `${BASE_FRONT}/host.html?e=${encodeURIComponent(j.event_id)}&key=${encodeURIComponent((new URL(j.link_painel)).searchParams.get('key'))}`;
+    showLinks(guest, host);
+    setMsg('Evento criado com sucesso!', 'ok');
+  }catch(err){ setMsg('Erro: '+err.message, 'err'); }
+};
+
+function v(id){ return document.getElementById(id).value.trim(); }
+function setMsg(t, cls){ const el = document.getElementById('msg'); el.className=cls; el.textContent=t; }
+function showLinks(guest, host){
+  const g=document.getElementById('guestLink'); g.textContent=guest; g.href=guest;
+  const h=document.getElementById('hostLink');  h.textContent=host;  h.href=host;
+  document.getElementById('links').style.display='block';
+}
+</script>
+</body></html>
