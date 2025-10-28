@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const pool = require('./db');
+const pool = require('./db'); // db.js na mesma pasta
 
 const app = express();
 app.use(cors());
