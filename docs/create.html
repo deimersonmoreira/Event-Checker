@@ -8,532 +8,138 @@
     :root{
       --bg:#ffffff;
       --card:#ffffff;
-      --text:#0f172a; /* slate-900 */
-      --muted:#475569; /* slate-600 */
-      --border:#e2e8f0; /* slate-200 */
-      --primary:#111827; /* gray-900 */
-      --primary-contrast:#ffffff;
-      --accent:#2563eb; /* blue-600 */
-      --ring:#93c5fd; /* blue-300 */
-      --danger:#ef4444;
-      --success:#16a34a;
-      --shadow: 0 10px 20px rgba(2, 6, 23, 0.06), 0 2px 6px rgba(2, 6, 23, 0.04);
-      --radius: 18px;
+      --text:#0f172a;
+      --muted:#475569;
+      --border:#e2e8f0;
+      --accent:#2563eb;
+      --shadow: 0 10px 20px rgba(2,6,23,0.06), 0 2px 6px rgba(2,6,23,0.04);
+      --radius:18px;
     }
-    *{ box-sizing:border-box; }
-    html, body { height:100%; }
     body{
-      margin:0; background:var(--bg); color:var(--text);
-      font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
-      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif;
+      background:var(--bg); color:var(--text);
     }
-    .container{
-      max-width: 980px; margin: 40px auto; padding: 0 20px;
+    .container{ max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    .card{ background:var(--card); border:1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding:22px; }
+    label{ display:block; font-weight:600; font-size:14px; margin-bottom:6px; color:var(--muted); }
+    input, textarea, select{
+      width:100%; padding:12px; border:1px solid var(--border); border-radius:12px; font-size:15px; color:var(--text);
+      outline:none; transition:0.2s;
     }
-    header{
-      display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom: 22px;
+    input:focus, textarea:focus{ border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+    .row{ display:grid; gap:16px; margin-bottom:16px; }
+    @media(min-width:680px){ .row.cols-2{ grid-template-columns: 1fr 1fr; } }
+    h1{ font-size:26px; margin:0 0 20px; }
+    h2{ font-size:18px; margin:20px 0 10px; }
+    .muted{ font-size:13px; color:var(--muted); }
+    .actions{ display:flex; gap:10px; margin-top:20px; }
+    button{
+      padding:12px 18px; border:none; border-radius:10px; cursor:pointer; font-weight:600; font-size:15px;
+      transition:0.2s; box-shadow: var(--shadow);
     }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-    }
-    .logo{
-      width:40px; height:40px; border-radius:10px; background: linear-gradient(135deg, var(--accent), #60a5fa);
-      box-shadow: var(--shadow);
-    }
-    h1{ font-size: clamp(22px, 3vw, 28px); margin:0; letter-spacing:-0.02em; }
-    .subtitle{ color:var(--muted); font-size:14px; }
-
-    .grid{
-      display:grid; grid-template-columns: 1fr; gap:18px;
-    }
-    @media (min-width: 900px){
-      .grid{ grid-template-columns: 7fr 5fr; }
-    }
-
-    .card{
-      background:var(--card); border:1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
-    }
-    .card .content{ padding: 22px; }
-    .card h2{ font-size: 16px; margin:0 0 14px; letter-spacing: -0.01em; }
-
-    .row{ display:grid; grid-template-columns: 1fr; gap:12px; margin-bottom: 14px; }
-    @media (min-width:680px){
-      .row.cols-2{ grid-template-columns: 1fr 1fr; }
-      .row.cols-3{ grid-template-columns: 1fr 1fr 1fr; }
-      .row.cols-4{ grid-template-columns: 1fr 1fr 1fr 1fr; }
-    }
-
-    label{ font-weight: 600; font-size: 13px; color: var(--muted); }
-    .req::after{ content:" *"; color:var(--danger); font-weight:700; }
-
-    input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea{
-      width:100%; padding:12px 12px; border:1px solid var(--border); border-radius:12px; outline:none; background:#fff; color:var(--text);
-      transition: box-shadow .15s ease, border-color .15s ease, transform .02s ease;
-    }
-    textarea{ min-height: 100px; resize: vertical; }
-    input:focus, textarea:focus{ border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
-
-    .muted{ color:var(--muted); font-size:12.5px; }
-    .inline{ display:flex; align-items:center; gap:10px; }
-
-    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px; }
-    .btn{
-      appearance:none; border:1px solid transparent; background:var(--primary); color:var(--primary-contrast); padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:700; letter-spacing:.2px;
-      box-shadow: var(--shadow); transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
-    }
-    .btn:hover{ filter: brightness(1.02); box-shadow: 0 12px 24px rgba(2,6,23,.08), 0 4px 10px rgba(2,6,23,.05); }
-    .btn:active{ transform: translateY(1px); }
-    .btn.secondary{ background:#f8fafc; color:#0f172a; border-color:var(--border); }
-    .btn.accent{ background: var(--accent); color:#fff; }
-    .btn.ghost{ background:transparent; color:var(--muted); border-color: var(--border); }
-
-    .switch{ position:relative; width:44px; height:26px; background:#e5e7eb; border-radius: 999px; cursor:pointer; transition: background .2s ease; border:1px solid var(--border); }
-    .switch[data-on="true"]{ background:#c7d2fe; border-color:#a5b4fc; }
-    .knob{ position:absolute; top:2px; left:2px; width:22px; height:22px; background:#fff; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,.15); transition:left .2s ease; }
-    .switch[data-on="true"] .knob{ left:20px; }
-
-    .divider{ height:1px; background: var(--border); margin: 18px 0; }
-
-    .pill{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#f1f5f9; border:1px solid var(--border); font-size:12.5px; }
-
-    .preview{ border-radius:14px; border:1px dashed var(--border); overflow:hidden; }
-    .preview header{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; background: var(--primary); color:#fff; }
-    .preview .title{ font-weight:700; }
-    .preview .badge{ background:#00000022; border:1px solid #00000033; border-radius:999px; padding:4px 10px; font-size:12px; }
-    .preview .body{ padding:18px 16px; }
-
-    .hint{ font-size:12.5px; color:var(--muted); margin-top:6px; }
-    .error{ font-size:12.5px; color:var(--danger); margin-top:6px; display:none; }
-    .input-error{ border-color: var(--danger) !important; box-shadow: 0 0 0 3px rgba(239,68,68,.15) !important; }
-
-    .toast{ position: fixed; right: 18px; bottom: 18px; z-index:9999; display:flex; flex-direction:column; gap:10px; }
-    .toast .item{ background:#111827; color:#fff; border-radius:12px; padding:12px 14px; box-shadow:var(--shadow); max-width: min(460px, 90vw); }
-    .toast .item.success{ background: #065f46; }
-    .toast .item.error{ background: #7f1d1d; }
-    .toast .item a{ color:#a7f3d0; font-weight:700; text-decoration:underline; }
-
-    .footer-note{ margin-top:12px; font-size:12.5px; color:var(--muted); }
-
-    .copy{ user-select: all; }
-
+    .btn-primary{ background:var(--accent); color:white; }
+    .btn-primary:hover{ filter:brightness(1.1); }
+    .btn-secondary{ background:#f8fafc; color:var(--text); }
+    .color-selectors{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:10px; }
+    .color-box{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>Event Checker</h1>
-          <div class="subtitle">Crie seu evento e compartilhe o link para confirmar presenças.</div>
-        </div>
-      </div>
-      <div class="inline">
-        <span class="pill">Tema: Claro</span>
-      </div>
-    </header>
-
-    <div class="grid">
-      <!-- FORM CARD -->
-      <section class="card" aria-labelledby="formTitle">
-        <div class="content">
-          <h2 id="formTitle">Detalhes do evento</h2>
-
-          <form id="eventForm" novalidate>
-            <div class="row">
-              <div>
-                <label for="title" class="req">Título do evento</label>
-                <input id="title" name="title" type="text" placeholder="Ex.: Aniversário da Ana" required />
-                <div class="error" data-error-for="title">Informe um título.</div>
-              </div>
-            </div>
-
-            <div class="row cols-2">
-              <div>
-                <label for="date" class="req">Data</label>
-                <input id="date" name="event_date" type="date" required />
-                <div class="error" data-error-for="date">Escolha a data do evento.</div>
-              </div>
-              <div>
-                <label for="time" class="req">Hora</label>
-                <input id="time" name="event_time" type="time" required />
-                <div class="error" data-error-for="time">Informe o horário do evento.</div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div>
-                <label for="location">Local</label>
-                <input id="location" name="location" type="text" placeholder="Endereço ou link (Google Maps, etc.)" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div>
-                <label for="description">Descrição</label>
-                <textarea id="description" name="description" placeholder="Observações, dress code, lista de presentes..."></textarea>
-              </div>
-            </div>
-
-            <div class="divider" role="separator"></div>
-
-            <h2>Confirmação de presença (RSVP)</h2>
-            <p class="muted">A <strong>Data Limite de Confirmação</strong> é opcional. Se você não definir, ela será gerada automaticamente pelo servidor para 24h antes do evento.</p>
-
-            <div class="row">
-              <div class="inline" style="justify-content: space-between;">
-                <div class="inline" style="gap:10px;">
-                  <div id="rsvpSwitch" class="switch" role="switch" aria-checked="false" tabindex="0"><div class="knob"></div></div>
-                  <label style="margin:0">Definir Data Limite de Confirmação</label>
-                </div>
-                <span class="muted">Opcional</span>
-              </div>
-            </div>
-
-            <div id="rsvpWrapper" class="row cols-2" style="display:none">
-              <div>
-                <label for="rsvp_date">Data Limite de Confirmação</label>
-                <input id="rsvp_date" name="rsvp_deadline_date" type="date" />
-              </div>
-              <div>
-                <label for="rsvp_time">Hora Limite</label>
-                <input id="rsvp_time" name="rsvp_deadline_time" type="time" />
-              </div>
-              <div class="row" style="grid-column:1/-1; margin-top:-6px;">
-                <div class="muted">Dica: essa data não pode ser depois do início do evento.</div>
-                <div class="error" data-error-for="rsvp">A data limite deve ser anterior ao evento.</div>
-              </div>
-            </div>
-
-            <div class="divider" role="separator"></div>
-
-            <h2>Personalização visual</h2>
-            <p class="muted">Use as cores abaixo para deixar seu evento com a sua cara. Tema claro por padrão (fundo branco, texto preto).</p>
-
-            <div class="row cols-2">
-              <div>
-                <label for="primary_color">Cor primária</label>
-                <div class="row cols-2" style="align-items:end;">
-                  <input id="primary_color" type="color" value="#2563eb" />
-                  <div>
-                    <label for="primary_hex" class="muted">HEX</label>
-                    <input id="primary_hex" type="text" placeholder="#2563EB" value="#2563EB" />
-                    <div class="hint">Ex.: #111827, #2563EB</div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label for="secondary_color">Cor de destaque</label>
-                <div class="row cols-2" style="align-items:end;">
-                  <input id="secondary_color" type="color" value="#111827" />
-                  <div>
-                    <label for="secondary_hex" class="muted">HEX</label>
-                    <input id="secondary_hex" type="text" placeholder="#111827" value="#111827" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row cols-4">
-              <div>
-                <label class="muted">R</label>
-                <input id="rgb_r" type="number" min="0" max="255" value="37" />
-              </div>
-              <div>
-                <label class="muted">G</label>
-                <input id="rgb_g" type="number" min="0" max="255" value="99" />
-              </div>
-              <div>
-                <label class="muted">B</label>
-                <input id="rgb_b" type="number" min="0" max="255" value="235" />
-              </div>
-              <div style="display:flex; align-items:end;">
-                <button class="btn secondary" type="button" id="syncRgb">Sincronizar RGB ↔ HEX</button>
-              </div>
-            </div>
-
-            <div class="actions">
-              <button id="submitBtn" class="btn accent" type="submit">Criar evento</button>
-              <button class="btn ghost" type="reset">Limpar</button>
-            </div>
-
-            <div class="footer-note">
-              Ao criar, um link único de convidado será gerado para confirmação de presença (vou / talvez / não vou).
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- PREVIEW / HELP CARD -->
-      <aside class="card" aria-labelledby="previewTitle">
-        <div class="content">
-          <h2 id="previewTitle">Prévia visual</h2>
-          <div class="preview" id="preview">
-            <header id="previewHeader">
-              <div class="title" id="pTitle">Título do evento</div>
-              <div class="badge" id="pDate">--/-- — --:--</div>
-            </header>
-            <div class="body">
-              <div class="muted" id="pLocation">Local aparecerá aqui</div>
-              <p class="muted" id="pDesc" style="margin:10px 0 0">Descrição do evento aparecerá aqui.</p>
-            </div>
+    <h1>Event Checker</h1>
+    <div class="card">
+      <form id="eventForm">
+        <div class="row">
+          <div>
+            <label for="title">Título do evento *</label>
+            <input type="text" id="title" name="title" placeholder="Ex.: Aniversário da Ana" required>
           </div>
-
-          <div class="divider"></div>
-
-          <h2>Dicas rápidas</h2>
-          <ul class="muted" style="margin:0 0 8px 18px; padding:0; display:grid; gap:6px;">
-            <li>Campos obrigatórios: <strong>Título</strong>, <strong>Data</strong> e <strong>Hora</strong>.</li>
-            <li>A <em>Data Limite de Confirmação</em> é <strong>opcional</strong>. Se não informar, o servidor define automaticamente <strong>24h antes</strong> do evento.</li>
-            <li>Datas e horários são salvos no fuso <strong>America/Sao_Paulo</strong> pelo servidor.</li>
-          </ul>
         </div>
-      </aside>
-    </div>
+        <div class="row cols-2">
+          <div>
+            <label for="date">Data *</label>
+            <input type="date" id="date" name="event_date" required>
+          </div>
+          <div>
+            <label for="time">Hora *</label>
+            <input type="time" id="time" name="event_time" required>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="location">Local</label>
+            <input type="text" id="location" name="location" placeholder="Endereço ou link (Google Maps, etc.)">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="description">Descrição</label>
+            <textarea id="description" name="description" placeholder="Observações, dress code, lista de presentes..."></textarea>
+          </div>
+        </div>
 
-    <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+        <h2>Data Limite de Confirmação (Opcional)</h2>
+        <div class="row cols-2">
+          <div>
+            <label for="rsvp_date">Data Limite</label>
+            <input type="date" id="rsvp_date" name="rsvp_deadline_date">
+          </div>
+          <div>
+            <label for="rsvp_time">Hora Limite</label>
+            <input type="time" id="rsvp_time" name="rsvp_deadline_time">
+          </div>
+        </div>
+
+        <h2>Personalização visual</h2>
+        <p class="muted">Escolha as cores do seu evento. Tema claro por padrão.</p>
+        <div class="color-selectors">
+          <div class="color-box">
+            <label for="primary_color">Cor primária</label>
+            <input type="color" id="primary_color" name="primary_color" value="#2563eb">
+          </div>
+          <div class="color-box">
+            <label for="secondary_color">Cor de destaque</label>
+            <input type="color" id="secondary_color" name="secondary_color" value="#111827">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" type="submit">Criar evento</button>
+          <button class="btn-secondary" type="reset">Limpar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script>
-    // ======= CONFIG =======
     const API_BASE = 'https://event-checker-k47o.onrender.com';
-
-    // ======= UTIL =======
-    const $ = (sel, root=document) => root.querySelector(sel);
-    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-    function showToast(message, type='info', withCopy){
-      const box = document.getElementById('toast');
-      const item = document.createElement('div');
-      item.className = `item ${type==='success'?'success':''} ${type==='error'?'error':''}`;
-      item.innerHTML = message;
-      box.appendChild(item);
-      setTimeout(() => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(6px)';
-        setTimeout(() => item.remove(), 300);
-      }, 6000);
-    }
-
-    function hexToRgb(hex){
-      hex = hex.replace('#','');
-      if(hex.length===3){ hex = hex.split('').map(c=>c+c).join(''); }
-      const num = parseInt(hex,16);
-      return { r:(num>>16)&255, g:(num>>8)&255, b:num&255 };
-    }
-    function rgbToHex(r,g,b){
-      const clamp = (n)=> Math.max(0, Math.min(255, Number(n)||0));
-      return '#' + [clamp(r), clamp(g), clamp(b)].map(n => n.toString(16).padStart(2,'0')).join('').toUpperCase();
-    }
-    function isValidHex(s){ return /^#?[0-9a-fA-F]{6}$/.test(s) || /^#?[0-9a-fA-F]{3}$/.test(s); }
-
-    function setPreviewColors(primaryHex, secondaryHex){
-      const header = document.getElementById('previewHeader');
-      header.style.background = secondaryHex;
-    }
-
-    function formatDateForPreview(dateStr, timeStr){
-      if(!dateStr || !timeStr) return '--/-- — --:--';
-      const [y,m,d] = dateStr.split('-').map(Number);
-      const [hh,mm] = timeStr.split(':').map(Number);
-      // Exibir no padrão brasileiro sem timezone (servidor vai tratar TZ)
-      return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')} — ${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
-    }
-
-    function setInputError(input, msg){
-      input.classList.add('input-error');
-      const err = document.querySelector(`.error[data-error-for="${input.id}"]`) || document.querySelector(`.error[data-error-for="${input.name}"]`);
-      if(err){ err.textContent = msg; err.style.display = 'block'; }
-    }
-    function clearInputError(input){
-      input.classList.remove('input-error');
-      const err = document.querySelector(`.error[data-error-for="${input.id}"]`) || document.querySelector(`.error[data-error-for="${input.name}"]`);
-      if(err){ err.style.display = 'none'; }
-    }
-
-    // ======= BINDINGS =======
     const form = document.getElementById('eventForm');
-    const title = document.getElementById('title');
-    const date = document.getElementById('date');
-    const time = document.getElementById('time');
-    const locationEl = document.getElementById('location');
-    const desc = document.getElementById('description');
 
-    const rsvpSwitch = document.getElementById('rsvpSwitch');
-    const rsvpWrapper = document.getElementById('rsvpWrapper');
-    const rsvpDate = document.getElementById('rsvp_date');
-    const rsvpTime = document.getElementById('rsvp_time');
-
-    const primaryColor = document.getElementById('primary_color');
-    const primaryHex = document.getElementById('primary_hex');
-    const secondaryColor = document.getElementById('secondary_color');
-    const secondaryHex = document.getElementById('secondary_hex');
-
-    const rgbR = document.getElementById('rgb_r');
-    const rgbG = document.getElementById('rgb_g');
-    const rgbB = document.getElementById('rgb_b');
-    const syncRgbBtn = document.getElementById('syncRgb');
-
-    const pTitle = document.getElementById('pTitle');
-    const pDate = document.getElementById('pDate');
-    const pLocation = document.getElementById('pLocation');
-    const pDesc = document.getElementById('pDesc');
-
-    // Live preview
-    title.addEventListener('input', () => pTitle.textContent = title.value || 'Título do evento');
-    date.addEventListener('change', () => pDate.textContent = formatDateForPreview(date.value, time.value));
-    time.addEventListener('change', () => pDate.textContent = formatDateForPreview(date.value, time.value));
-    locationEl.addEventListener('input', () => pLocation.textContent = locationEl.value || 'Local aparecerá aqui');
-    desc.addEventListener('input', () => pDesc.textContent = desc.value || 'Descrição do evento aparecerá aqui.');
-
-    // RSVP toggle
-    function toggleRsvp(force){
-      const on = force!==undefined ? force : rsvpSwitch.getAttribute('data-on')!=="true";
-      rsvpSwitch.setAttribute('data-on', on);
-      rsvpWrapper.style.display = on ? 'grid' : 'none';
-      if(!on){ rsvpDate.value = ''; rsvpTime.value=''; clearInputError(rsvpDate); $('.error[data-error-for="rsvp"]').style.display='none'; }
-    }
-    rsvpSwitch.addEventListener('click',()=>toggleRsvp());
-    rsvpSwitch.addEventListener('keydown',(e)=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggleRsvp(); }});
-
-    // Color sync (HEX ↔ input[type=color])
-    function syncHexToPickers(elHex, elPicker){
-      let val = elHex.value.trim();
-      if(!val) return;
-      if(!val.startsWith('#')) val = '#'+val;
-      if(!isValidHex(val)){
-        setInputError(elHex, 'HEX inválido');
-        return;
-      }
-      clearInputError(elHex);
-      elHex.value = val.toUpperCase();
-      elPicker.value = rgbToHex(...Object.values(hexToRgb(val)));
-      // Also push to preview if primary or secondary
-      setPreviewColors(primaryHex.value, secondaryHex.value);
-    }
-
-    primaryColor.addEventListener('input',()=>{ primaryHex.value = primaryColor.value.toUpperCase(); setPreviewColors(primaryHex.value, secondaryHex.value); const {r,g,b}=hexToRgb(primaryHex.value); rgbR.value=r; rgbG.value=g; rgbB.value=b; });
-    secondaryColor.addEventListener('input',()=>{ secondaryHex.value = secondaryColor.value.toUpperCase(); setPreviewColors(primaryHex.value, secondaryHex.value); });
-
-    primaryHex.addEventListener('change',()=> syncHexToPickers(primaryHex, primaryColor));
-    secondaryHex.addEventListener('change',()=> syncHexToPickers(secondaryHex, secondaryColor));
-
-    // RGB <-> HEX sync
-    syncRgbBtn.addEventListener('click',()=>{
-      const hex = rgbToHex(rgbR.value, rgbG.value, rgbB.value);
-      primaryHex.value = hex;
-      primaryColor.value = hex;
-      setPreviewColors(primaryHex.value, secondaryHex.value);
-    });
-
-    // Initial preview colors
-    setPreviewColors(primaryHex.value, secondaryHex.value);
-
-    // Basic required validation + RSVP rule
-    function validate(){
-      let ok = true;
-      [title, date, time].forEach(el=>{
-        if(!el.value){ setInputError(el, 'Campo obrigatório'); ok=false; } else { clearInputError(el); }
-      });
-
-      // RSVP must be < event start
-      if(rsvpWrapper.style.display!=="none" && rsvpDate.value && rsvpTime.value && date.value && time.value){
-        const rsvp = new Date(`${rsvpDate.value}T${rsvpTime.value}:00`);
-        const start = new Date(`${date.value}T${time.value}:00`);
-        if(!(rsvp < start)){
-          const err = $('.error[data-error-for="rsvp"]');
-          err.style.display='block';
-          setInputError(rsvpDate, '');
-          ok = false;
-        } else {
-          $('.error[data-error-for="rsvp"]').style.display='none';
-          clearInputError(rsvpDate);
-        }
-      }
-
-      // HEX format checks
-      [primaryHex, secondaryHex].forEach(el=>{
-        if(el.value && !isValidHex(el.value)){
-          setInputError(el, 'HEX inválido'); ok=false;
-        } else clearInputError(el);
-      });
-
-      return ok;
-    }
-
-    // Submit
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
-      if(!validate()){
-        showToast('Revise os campos destacados.', 'error');
-        return;
-      }
-
-      const payload = {
-        title: title.value.trim(),
-        description: desc.value.trim() || null,
-        event_date: date.value,          // servidor aceita date/time separados e aplica TZ
-        event_time: time.value,
-        location: locationEl.value.trim() || null,
+      const data = {
+        title: form.title.value.trim(),
+        event_date: form.event_date.value,
+        event_time: form.event_time.value,
+        location: form.location.value.trim() || null,
+        description: form.description.value.trim() || null,
+        rsvp_deadline_date: form.rsvp_deadline_date.value || null,
+        rsvp_deadline_time: form.rsvp_deadline_time.value || null,
         theme: {
-          primary_hex: (primaryHex.value||primaryColor.value).toUpperCase(),
-          secondary_hex: (secondaryHex.value||secondaryColor.value).toUpperCase()
+          primary_hex: form.primary_color.value,
+          secondary_hex: form.secondary_color.value
         }
       };
-
-      if(rsvpWrapper.style.display!=="none" && rsvpDate.value && rsvpTime.value){
-        payload.rsvp_deadline_date = rsvpDate.value;
-        payload.rsvp_deadline_time = rsvpTime.value;
-      }
-
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true; submitBtn.textContent = 'Enviando...';
-
       try{
-        const res = await fetch(`${API_BASE}/api/events`, {
-          method: 'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload)
-        });
-        const data = await res.json().catch(()=>({}));
-        if(!res.ok){
-          const msg = data && (data.error || data.message) ? (data.error || data.message) : `Erro ${res.status}`;
-          throw new Error(msg);
-        }
-
-        // Try to infer event identifier and build share link
-        const eventId = data.id || (data.event && data.event.id) || data.event_id || data.slug || null;
-        let shareLink = '';
-        if(eventId){
-          // guest page (ajuste a rota da sua guest page, se necessário)
-          const base = location.origin;
-          // Assumindo que haverá uma página guest.html que consome ?id= ou ?event=
-          shareLink = `${base.replace(/\/$/, '')}/Event-Checker/guest.html?event=${encodeURIComponent(eventId)}`;
-        }
-
-        showToast(`Evento criado com sucesso! ${shareLink ? `<br><span class='copy'>Link para convidados: <a href='${shareLink}' target='_blank' rel='noopener'>${shareLink}</a></span>` : ''}`, 'success');
+        const res = await fetch(`${API_BASE}/api/events`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+        if(!res.ok) throw new Error('Erro ao criar evento');
+        const json = await res.json();
+        alert('Evento criado com sucesso!');
         form.reset();
-        toggleRsvp(false);
-        // Reset preview
-        pTitle.textContent = 'Título do evento';
-        pDate.textContent = '--/-- — --:--';
-        pLocation.textContent = 'Local aparecerá aqui';
-        pDesc.textContent = 'Descrição do evento aparecerá aqui.';
       }catch(err){
-        console.error(err);
-        showToast(`Não foi possível criar o evento. <br><small>${(err && err.message) || 'Tente novamente mais tarde.'}</small>`, 'error');
-      }finally{
-        submitBtn.disabled = false; submitBtn.textContent = 'Criar evento';
+        alert('Erro: '+err.message);
       }
     });
-
-    // Clear errors on input
-    $$('.input-error').forEach(el=> el.addEventListener('input',()=>clearInputError(el)));
-    [title,date,time,rsvpDate,rsvpTime,primaryHex,secondaryHex].forEach(el=>{
-      el.addEventListener('input',()=>clearInputError(el));
-      el.addEventListener('change',()=>clearInputError(el));
-    });
-
-    // Accessibility: set locale for date inputs (best effort)
-    document.documentElement.lang = 'pt-BR';
   </script>
 </body>
 </html>
