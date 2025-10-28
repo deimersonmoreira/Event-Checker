@@ -1,19 +1,17 @@
-import express, { Request, Response } from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import pool from './db.js'; // mantém .js, porque o Node importará o JS compilado
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const pool = require('./db');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// teste simples de conexão
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Event Checker API rodando 🎉');
-});
+// teste simples
+app.get('/', (_req, res) => res.send('Event Checker API rodando 🎉'));
 
-// rota de teste no banco
-app.get('/test-db', async (_req: Request, res: Response) => {
+// teste de banco
+app.get('/test-db', async (_req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
     res.json({ status: 'ok', time: result.rows[0].now });
