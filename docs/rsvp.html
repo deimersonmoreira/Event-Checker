@@ -1,0 +1,65 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Confirmar Presença</title>
+<style>
+ body{font-family:system-ui,Arial,sans-serif;max-width:640px;margin:32px auto;padding:0 16px}
+ h1{font-size:22px;margin-bottom:16px}
+ label{display:block;margin:10px 0 4px}
+ input,select,button{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
+ .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .ok{color:#0a7a20}.err{color:#b00020}
+</style>
+</head><body>
+<h1>🎈 Confirme sua presença</h1>
+
+<div>
+  <label>Seu nome*</label><input id="name" placeholder="Nome completo">
+  <label>Telefone*</label><input id="phone" placeholder="(31) 9 8888-7777">
+  <label>Status*</label>
+  <select id="status">
+    <option value="going">Vou</option>
+    <option value="maybe">Talvez</option>
+    <option value="not_going">Não vou</option>
+  </select>
+  <div class="row">
+    <div><label>Total de pessoas (você + acompanhantes)*</label><input id="total_people" type="number" min="1" value="1"></div>
+    <div><label>Quantas são crianças (&lt; 12)</label><input id="children" type="number" min="0" value="0"></div>
+  </div>
+  <input id="honeypot" style="display:none">
+  <button id="sendBtn" style="margin-top:14px">Enviar</button>
+  <div id="msg" style="margin-top:10px"></div>
+</div>
+
+<script>
+const BASE_API = "https://event-checker-k47o.onrender.com";
+const url = new URL(location.href);
+const eventId = url.searchParams.get('e'); // ?e=<event_id>
+if(!eventId){ document.body.innerHTML = "<p class='err'>Link inválido. Falta o ID do evento (?e=...).</p>"; }
+
+document.getElementById('sendBtn').onclick = async () => {
+  const payload = {
+    name: gv('name'), phone: gv('phone'), email: null,
+    status: gv('status'),
+    total_people: +gv('total_people')||0,
+    children: +gv('children')||0,
+    honeypot: document.getElementById('honeypot').value
+  };
+  setMsg('Enviando...', '');
+  try{
+    const r = await fetch(`${BASE_API}/api/rsvp/${encodeURIComponent(eventId)}`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+    });
+    const j = await r.json();
+    if(!r.ok) throw new Error(j.error||'Falha ao enviar');
+    // Mensagem de obrigado (corrigida conforme seu pedido: sem “levaremos você+crianças adultos”)
+    const texto = (payload.status==='going')
+      ? 'Obrigado! Sua presença está confirmada.'
+      : (payload.status==='maybe' ? 'Obrigado! Sua resposta foi registrada como “Talvez”.' : 'Obrigado! Registro de “Não vou” realizado.');
+    setMsg(texto + ' Você pode editar até 24h antes do evento acessando este mesmo link.', 'ok');
+  }catch(err){ setMsg('Erro: '+err.message, 'err'); }
+};
+
+function gv(id){ return document.getElementById(id).value.trim(); }
+function setMsg(t, cls){ const el=document.getElementById('msg'); el.className=cls; el.textContent=t; }
+</script>
+</body></html>
