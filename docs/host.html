@@ -1,0 +1,54 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel do Anfitrião</title>
+<style>
+ body{font-family:system-ui,Arial,sans-serif;max-width:720px;margin:32px auto;padding:0 16px}
+ h1{font-size:22px;margin-bottom:10px}
+ .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+ .kpi{border:1px solid #eee;border-radius:12px;padding:14px;text-align:center}
+ .big{font-size:26px;font-weight:700}
+ .err{color:#b00020}
+ .mono{font-family:ui-monospace,Menlo,monospace}
+</style>
+</head><body>
+<h1>📊 Painel do Anfitrião</h1>
+<p>Use este link para o convidado: <span id="guest" class="mono"></span></p>
+
+<div class="grid" style="margin:16px 0">
+  <div class="kpi"><div>Total</div><div id="all" class="big">0</div></div>
+  <div class="kpi"><div>Vou</div><div id="going" class="big">0</div></div>
+  <div class="kpi"><div>Talvez</div><div id="maybe" class="big">0</div></div>
+  <div class="kpi"><div>Não vou</div><div id="not_going" class="big">0</div></div>
+  <div class="kpi"><div>Adultos</div><div id="adults" class="big">0</div></div>
+  <div class="kpi"><div>Crianças</div><div id="children" class="big">0</div></div>
+</div>
+
+<div id="err" class="err"></div>
+
+<script>
+const BASE_API = "https://event-checker-k47o.onrender.com";
+const u = new URL(location.href);
+const eventId = u.searchParams.get('e');
+const key = u.searchParams.get('key')||'';
+
+if(!eventId){ document.getElementById('err').textContent='Falta o ID do evento (?e=...)'; }
+
+const rsvpLink = location.origin + location.pathname.replace(/\/host\.html$/,'/rsvp.html') + `?e=${encodeURIComponent(eventId)}`;
+document.getElementById('guest').textContent = rsvpLink;
+
+async function refresh(){
+  try{
+    const r = await fetch(`${BASE_API}/api/events/${encodeURIComponent(eventId)}/summary?key=${encodeURIComponent(key)}`);
+    const j = await r.json();
+    if(!r.ok) throw new Error(j.error||'Falha no resumo');
+    const t=j.totals;
+    set('all', t.all); set('going', t.going); set('maybe', t.maybe);
+    set('not_going', t.not_going); set('adults', t.adults); set('children', t.children);
+  }catch(e){ document.getElementById('err').textContent='Erro: '+e.message; }
+}
+
+function set(id, v){ document.getElementById(id).textContent = v; }
+refresh();
+setInterval(refresh, 15000);
+</script>
+</body></html>
