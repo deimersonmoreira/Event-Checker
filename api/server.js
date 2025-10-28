@@ -1,3 +1,6 @@
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -212,3 +215,4 @@ app.get('/api/events/:id/summary', async (req, res) => {
 // ---------- Start ----------
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`✅ Servidor rodando na porta ${port}`));
+
